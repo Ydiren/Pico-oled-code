@@ -1,0 +1,5 @@
+/Users/andy/Projects/github/RaspberryPi/Pico/Pico-oled-code/c/build/elf2uf2/CMakeFiles/elf2uf2.dir
+/Users/andy/Projects/github/RaspberryPi/Pico/Pico-oled-code/c/build/elf2uf2/CMakeFiles/edit_cache.dir
+/Users/andy/Projects/github/RaspberryPi/Pico/Pico-oled-code/c/build/elf2uf2/CMakeFiles/rebuild_cache.dir
+/Users/andy/Projects/github/RaspberryPi/Pico/Pico-oled-code/c/build/elf2uf2/boot_uf2_headers/CMakeFiles/edit_cache.dir
+/Users/andy/Projects/github/RaspberryPi/Pico/Pico-oled-code/c/build/elf2uf2/boot_uf2_headers/CMakeFiles/rebuild_cache.dir
