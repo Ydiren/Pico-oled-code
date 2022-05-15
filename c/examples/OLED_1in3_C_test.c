@@ -41,6 +41,8 @@
 extern char buf[];
 extern char *week[];
 
+sFONT* font = &Font24; 
+
 void init_ds3231(void) 
 {
    	stdio_init_all();
@@ -74,20 +76,20 @@ PAINT_TIME getTime(void)
     // char day[4];
     // sprintf(day, "%s\n",week[(unsigned char)buf[3]-1]);
 
-    PAINT_TIME currentTime;
-    currentTime.Sec = buf[0];
-    currentTime.Min = buf[1];
-    currentTime.Hour = buf[2];
-    currentTime.Day = buf[4];
-    currentTime.Month = buf[5];
-    currentTime.Year = buf[6];
+    PAINT_TIME paintTime;
+    paintTime.Sec = buf[0];
+    paintTime.Min = buf[1];
+    paintTime.Hour = buf[2];
+    paintTime.Day = buf[4];
+    paintTime.Month = buf[5];
+    paintTime.Year = buf[6];
 
     // if(buf[6]==0x00 && buf[5]==0x01 && buf[4]==0x01)
     // {
     //     ds3231SetTime(); 
     // }
         
-	return currentTime;
+	return paintTime;
 }
 
 int setTime(PAINT_TIME newTime)
@@ -205,29 +207,36 @@ int OLED_1in3_C_test(void)
     PAINT_TIME previousTime;
     uint16_t x = ((OLED_1in3_C_WIDTH - 72)/2);
     uint16_t y = 22;
+    uint8_t quietTime = false;
     while(1)
     {
+        Paint_Clear(BLACK);
+
         previousTime = currentTime;
         currentTime = getTime();
 
         if (currentTime.Hour >= 0x22 || currentTime.Hour < 0x08) 
         {
-            // Do nothing if in quiet hours
+            if (!quietTime)
+            {
+                //Clear the display only when entering quiet time
+                OLED_1in3_C_Display(BlackImage);
+                quietTime = true;
+            }
         }
         else 
         {
+            quietTime = false;
             if (currentTime.Min != previousTime.Min && (currentTime.Min % 16) % 5 == 0)
             {
                 x = rand() % (OLED_1in3_C_WIDTH - 72);
                 y = rand() % (OLED_1in3_C_HEIGHT - 24);
             }
-            Paint_DrawTime_NoSecs_Hex(x, y, &currentTime, &Font24, WHITE, BLACK);
+            Paint_DrawTime_NoSecs_Hex(x, y, &currentTime, font, WHITE, BLACK);
             OLED_1in3_C_Display(BlackImage);
         }        
 
         DEV_Delay_ms(1000);
-        
-        Paint_Clear(BLACK);
     }
     
 
@@ -315,4 +324,3 @@ int OLED_1in3_C_test(void)
     DEV_Module_Exit();
     return 0;
 }
-
